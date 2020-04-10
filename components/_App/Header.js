@@ -18,7 +18,7 @@ function Header() {
   }
 
   return (
-    <Menu fluid id="menu" inverted>
+    <Menu stackable fluid id="menu" inverted>
 
 
       <Container text>
