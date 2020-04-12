@@ -11,7 +11,7 @@ Router.onRouteChangeError = () => NProgress.done();
 function Header() {
 
   const router = useRouter();
-  const user = false;
+  const user = true;
 
   function isActive(route){
     return route === router.pathname;
@@ -19,8 +19,6 @@ function Header() {
 
   return (
     <Menu stackable fluid id="menu" inverted>
-
-
       <Container text>
         <Link href="/">
           <Menu.Item header active={isActive('/')}>
