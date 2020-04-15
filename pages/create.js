@@ -3,7 +3,7 @@ import { Form, Input, TextArea, Button, Image, Message,
 import React from 'react';
 import axios from 'axios';
 import baseUrl from '../utils/baseUrl';
-
+import catchErrors from '../utils/catchErrors.js';
 
 
 const INITIAL_PRODUCT = {
@@ -17,8 +17,14 @@ function CreateProduct() {
   const [product, setProduct] = React.useState(INITIAL_PRODUCT);
   const [success, setSuccess] = React.useState(false);
   const [mediaPreview, setMediaPreview] = React.useState("");
-
-
+  const [disabled, setDisabled] = React.useState(true);
+  const [error, setError] = React.useState("");
+  
+  //Prevents invalid form submission by ensuring fields are not empty
+  React.useEffect( () => {
+   const isProduct = Object.values(product).every(el => Boolean(el))
+    isProduct ? setDisabled(false) : setDisabled(true);
+  }, [product])
 
 
 
@@ -62,16 +68,25 @@ async function handleImageUpload() {
 
 
 async function handleSubmit(event) {
+
   setLoading(true);
-  event.preventDefault();
-  const mediaUrl = await handleImageUpload();
-  const url = `${baseUrl}/api/product`;
-  const {name, price, description } = product;
-  const payload = { name, price, description, mediaUrl};
-  const reponse = await axios.post(url, payload);
-  setLoading(false);
-  setProduct(INITIAL_PRODUCT);
-  setSuccess(true);
+
+  try{
+    setError("");
+    event.preventDefault();
+    const mediaUrl = await handleImageUpload();
+    const url = `${baseUrl}/api/product`;
+    const {name, price, description } = product;
+    const payload = { name, price, description, mediaUrl};
+    const reponse = await axios.post(url, payload);
+    setProduct(INITIAL_PRODUCT);
+    setSuccess(true);
+  }catch(error) {
+    catchErrors(error, setError);
+  }finally {
+    setLoading(false);
+  }
+
 }
 
 
@@ -81,7 +96,12 @@ async function handleSubmit(event) {
       <Icon name="add" color="orange"/>
       Create New Product
     </Header>
-    <Form loading={loading} success = {success} onSubmit={handleSubmit}>
+    <Form loading={loading} error={Boolean(error)} success = {success} onSubmit={handleSubmit}>
+      <Message
+        error
+        header="Oops!"
+        content= {error}
+      />
       <Message
         success
         icon="check"
@@ -147,7 +167,7 @@ async function handleSubmit(event) {
         />
         <Form.Field
           control={Button}
-          disabled={loading}
+          disabled={loading || disabled}
           color="blue"
           icon="pencil alternate"
           content="Submit"
