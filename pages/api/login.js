@@ -19,7 +19,7 @@ export default async (req, res) => {
         //check iif password is correct
         const passwordsMatch = await bcrypt.compare(password, user.password);
         if (passwordsMatch){
-            const token = jwt.sign({userid: user._id}, process.env.JWT_SECRET, {
+            const token = jwt.sign({userId: user._id}, process.env.JWT_SECRET, {
                 expiresIn: '4h'
             });
             res.status(200).json(token);
