@@ -15,7 +15,9 @@ export default async (req, res) => {
     const totalPages = Math.ceil(totalDocs / pageSize); //means no remainders will be left out 
 
     if (pageNum === 1) {
-        products = await Product.find().limit(pageSize);
+        products = await Product.find()
+        .sort({name: "asc"})
+        .limit(pageSize);
     } else {
         const skips = pageSize * (pageNum - 1);
         products = await Product.find().skip(skips).limit(pageSize);
