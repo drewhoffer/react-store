@@ -20,7 +20,6 @@ export default async (req, res) => {
           path: "products.product",
           model: "Product"
       });
-      console.log(cart.products)
 
       //3)calculate cart totals again (safer due to doing server side validation)
       const { cartTotal, stripeTotal } = calculateCartTotal(cart.products);

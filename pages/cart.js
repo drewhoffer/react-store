@@ -10,7 +10,7 @@ import catchErrors from '../utils/catchErrors';
 
 function Cart({ products, user }) {
   const [cartProducts, setCartProducts] = React.useState(products);
-  const [laoding, setLoading] = React.useState(false);
+  const [loading, setLoading] = React.useState(false);
 
   const [success, setSuccess] = React.useState(false);
   async function handleRemoveFromCart(productId) {
