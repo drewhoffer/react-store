@@ -1,17 +1,35 @@
 import { Container , Pagination } from 'semantic-ui-react';
 import { useRouter, Router } from 'next/router';
 
-function ProductPagination({totalPages}) {
+function ProductPagination({totalPages, sort, page}) {
   const router = useRouter();
+
+  
   return (
     <Container textAlign="center" style={{ margin: '2em'}}>
       <Pagination
-        defaultActivePage={1}
+        activePage={page}
         totalPages={totalPages}
         onPageChange={(event, data) => {
           data.activePage === 1
-          ? router.push('/')
-          : router.push(`/?page=${data.activePage}`)
+          ? router.push(
+            {
+              pathname: "/",
+              query: 
+                {
+                  sort: sort,
+                  page: data.activePage
+                }
+            })
+          : router.push(
+            {
+              pathname: "/",
+              query: 
+                {
+                  sort: sort,
+                  page: data.activePage
+                }
+            })
         }}/>
     </Container>
   );
