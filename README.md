@@ -1,1 +1,2 @@
-## Starting Repo for MERN Stack 
+## Repo for Hoffer-Ikea-Clone - MERN STACK
+Find the link here : https://hoffer-ikea-clone.herokuapp.com
